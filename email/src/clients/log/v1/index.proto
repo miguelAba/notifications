@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+package log;
+
+service LogService {
+  rpc Add (LogReq) returns (LogRes) {}
+}
+
+message LogReq {
+  string data = 1;
+}
+
+message LogRes {
+  int32 state = 1;
+}

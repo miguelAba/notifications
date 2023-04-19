@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+package db;
+
+message SubsResponse {
+  string state = 1;
+}
+
+message NotificationRequest {
+  repeated int32 ids = 1;
+  string name = 2;
+  string content = 3; 
+  string kind = 4;
+}
+
+
+service DatabaseService {
+    rpc CreateNotification (NotificationRequest) returns (SubsResponse);
+    rpc Hello( SubsResponse) returns (SubsResponse);
+  }

@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package email;
+
+service EmailService {
+  rpc SendEmail (EmailReq) returns (EmailRes) {}
+  rpc SendEmails (stream EmailReq) returns (stream EmailRes) {}
+}
+
+message EmailReq {
+  int32 id = 1;
+  string name = 2;
+  string content = 3;
+  string kind = 4;
+}
+
+message EmailRes {
+  string state = 1;
+}
+
+
+  
