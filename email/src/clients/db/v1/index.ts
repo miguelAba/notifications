@@ -1,4 +1,5 @@
 /* eslint-disable */
+import { Observable } from "rxjs";
 
 export const protobufPackage = "db";
 
@@ -14,6 +15,6 @@ export interface NotificationRequest {
 }
 
 export interface DatabaseService {
-  CreateNotification(request: NotificationRequest): Promise<SubsResponse>;
+  CreateNotification(request: NotificationRequest): Observable<SubsResponse>;
   Hello(request: SubsResponse): Promise<SubsResponse>;
 }

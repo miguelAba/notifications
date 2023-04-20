@@ -3,8 +3,7 @@ syntax = "proto3";
 package email;
 
 service EmailService {
-  rpc SendEmail (EmailReq) returns (EmailRes) {}
-  rpc SendEmails (stream EmailReq) returns (stream EmailRes) {}
+  rpc SendEmail (EmailReq) returns (stream EmailRes) {}
 }
 
 message EmailReq {

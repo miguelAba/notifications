@@ -1,7 +1,7 @@
 /* eslint-disable */
-import { Observable } from 'rxjs';
+import { Observable } from "rxjs";
 
-export const protobufPackage = 'email';
+export const protobufPackage = "email";
 
 export interface EmailReq {
   id: number;
@@ -15,6 +15,5 @@ export interface EmailRes {
 }
 
 export interface EmailService {
-  SendEmail(request: EmailReq): Promise<EmailRes>;
-  SendEmails(request: Observable<EmailReq>): Observable<EmailRes>;
+  SendEmail(request: EmailReq): Observable<EmailRes>;
 }

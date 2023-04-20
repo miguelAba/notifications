@@ -18,33 +18,23 @@ const microservices_1 = require("@nestjs/microservices");
 const typeorm_1 = require("@nestjs/typeorm");
 const typeorm_2 = require("typeorm");
 const entities_1 = require("../entities");
+const rxjs_1 = require("rxjs");
 let ServiceController = class ServiceController {
     constructor(sub, not, tem) {
         this.sub = sub;
         this.not = not;
         this.tem = tem;
-        console.log('ServiceController');
     }
-    async getSuscriptor(ids, kind) {
-        const list = await this.sub.find({ where: { userId: (0, typeorm_2.In)(ids), kind } });
-        return list.map(({ endPoint, id }) => ({ endPoint, id }));
+    getSuscriptor(ids, kind) {
+        const subs = this.sub.find({ where: { userId: (0, typeorm_2.In)(ids), kind } });
+        return (0, rxjs_1.from)(subs).pipe((0, rxjs_1.map)((list) => list.map(({ endPoint, id }) => ({ endPoint, id }))));
     }
-    async addTemplate(kind, name, content) {
+    addTemplate(kind, name, content) {
         const template = this.tem.create({ kind, name, content });
-        await this.tem.save(template);
-        return template;
+        return (0, rxjs_1.from)(this.tem.save(template));
     }
-    async CreateNotification({ ids, kind, content, name }) {
-        console.log(ids, kind, content, name);
-        const subs = await this.getSuscriptor(ids, kind);
-        if (subs.length !== ids.length)
-            return {
-                state: `ERROR ${subs.length} ${ids.length} ${JSON.stringify(subs)}`,
-            };
-        const template = await this.addTemplate(kind, name, content);
-        const insert = subs.map((subscriptor) => this.not.insert({ subscriptor, template }));
-        await Promise.all(insert);
-        return { state: 'OK' };
+    CreateNotification({ ids, kind, content, name }) {
+        return (0, rxjs_1.zip)(this.getSuscriptor(ids, kind), this.addTemplate(kind, name, content)).pipe((0, rxjs_1.mergeMap)(([subs, template]) => (0, rxjs_1.iif)(() => subs.length !== ids.length, (0, rxjs_1.of)({ state: `ERROR` }), (0, rxjs_1.forkJoin)(subs.map((subscriptor) => (0, rxjs_1.of)(this.not.insert({ subscriptor, template })))).pipe((0, rxjs_1.map)(() => ({ state: 'OK' }))))));
     }
     async Hello({ state }) {
         console.log('Hello');
@@ -55,7 +45,7 @@ __decorate([
     (0, microservices_1.GrpcMethod)('DatabaseService'),
     __metadata("design:type", Function),
     __metadata("design:paramtypes", [Object]),
-    __metadata("design:returntype", Promise)
+    __metadata("design:returntype", void 0)
 ], ServiceController.prototype, "CreateNotification", null);
 __decorate([
     (0, microservices_1.GrpcMethod)('DatabaseService'),

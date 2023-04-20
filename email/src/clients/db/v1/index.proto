@@ -15,6 +15,6 @@ message NotificationRequest {
 
 
 service DatabaseService {
-    rpc CreateNotification (NotificationRequest) returns (SubsResponse);
+    rpc CreateNotification (NotificationRequest) returns (stream SubsResponse);
     rpc Hello( SubsResponse) returns (SubsResponse);
   }

@@ -1,10 +1,10 @@
-import { Controller, Inject } from '@nestjs/common';
+import { Controller, Inject, OnModuleInit } from '@nestjs/common';
 import { EmailReq, EmailRes } from '../proto';
 import { ClientGrpc, GrpcMethod } from '@nestjs/microservices';
 import { DatabaseService } from '../../clients/db/v1';
 
 @Controller()
-export class ServiceController {
+export class ServiceController implements OnModuleInit {
   private dbService: DatabaseService;
   constructor(@Inject('DB_PACKAGE') private db: ClientGrpc) {}
 
@@ -12,17 +12,15 @@ export class ServiceController {
     this.dbService = this.db.getService<DatabaseService>('DatabaseService');
   }
 
-  @GrpcMethod('EmailService', 'SendEmail')
-  async SendEmail({ id }: EmailReq): Promise<EmailRes> {
+  @GrpcMethod('EmailService')
+  async SendEmail({ id }: EmailReq) {
     // send email
-    console.log(id);
-    const { state } = await this.dbService.CreateNotification({
+
+    return this.dbService.CreateNotification({
       ids: [id],
       kind: 'email',
       content: 'content',
       name: 'name',
     });
-
-    return { state };
   }
 }
