@@ -10,7 +10,6 @@ async function bootstrap() {
         options: {
             package: 'db',
             protoPath: (0, path_1.join)(__dirname, './v1/proto/index.proto'),
-            url: 'localhost:8082',
         },
     });
     await app.listen();

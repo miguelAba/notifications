@@ -4,17 +4,25 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ServiceController } from './v1/service/service.controller';
 import { Subscriptor, Notification, Template } from './v1/entities';
 
+const {
+  POSTGRES_HOST,
+  POSTGRES_USER,
+  POSTGRES_PASSWORD,
+  POSTGRES_PORT,
+  POSTGRES_DB,
+} = process.env;
+
 @Module({
   imports: [
     ConfigModule.forRoot(),
     TypeOrmModule.forFeature([Subscriptor, Notification, Template]),
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: process.env.DB_HOST,
-      database: process.env.DB_NAME,
-      port: parseInt(process.env.DB_PORT),
-      username: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
+      host: POSTGRES_HOST,
+      database: POSTGRES_DB,
+      port: parseInt(POSTGRES_PORT),
+      username: POSTGRES_USER,
+      password: POSTGRES_PASSWORD,
       autoLoadEntities: true,
       synchronize: true,
     }),
