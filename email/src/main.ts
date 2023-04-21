@@ -11,7 +11,7 @@ async function bootstrap() {
       options: {
         package: 'email',
         protoPath: join(__dirname, './v1/proto/index.proto'),
-        url: 'localhost:8081',
+        url: '0.0.0.0:5002',
       },
     },
   );

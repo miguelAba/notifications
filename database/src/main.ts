@@ -11,11 +11,12 @@ async function bootstrap() {
       options: {
         package: 'db',
         protoPath: join(__dirname, './v1/proto/index.proto'),
-        url: 'dns:localhost:8082',
+        url: '0.0.0.0:5001',
       },
     },
   );
 
   await app.listen();
 }
+
 bootstrap();

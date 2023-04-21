@@ -12,7 +12,7 @@ import { ServiceController } from './v1/service/service.controller';
         options: {
           package: 'db',
           protoPath: join(__dirname, 'clients/db/v1/index.proto'),
-          url: 'localhost:8082',
+          url: '0.0.0.0:5001',
         },
       },
     ]),
